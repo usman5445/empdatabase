@@ -1,11 +1,29 @@
-import { PersonPinCircleOutlined } from "@mui/icons-material";
+import {
+  AddPhotoAlternate,
+  PersonPinCircleOutlined,
+} from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addData, updateData } from "../redux-setup/actions/fetchData";
 import { changeaction } from "../redux-setup/reducers/handleUpdateReducer";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
+const handelImgUpload = (e, imgurlref, nameref) => {
+  const file = e.target.files[0];
+  const storage = getStorage();
+  const strgRef = ref(storage, `employee-img/${nameref.current.value}`);
+  uploadBytesResumable(strgRef, file).then(() =>
+    getDownloadURL(strgRef).then((url) => (imgurlref.current.value = url))
+  );
+  console.log(nameref.current.value);
+};
 const handelSubmit = (
   nameref,
   emailref,
@@ -98,9 +116,25 @@ export default function AddEmp() {
           style={{ margin: "5px" }}
           label="Image URL"
           variant="standard"
-          defaultValue={changeHappen.v ? editEmployeeObj.imgurl : ""}
+          disabled
+          defaultValue={
+            changeHappen.v ? editEmployeeObj.imgurl : "Nothing to show"
+          }
           inputRef={imgurlref}
         />
+        <Button
+          startIcon={<AddPhotoAlternate />}
+          variant="contained"
+          component="label"
+        >
+          Upload Image
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={(e) => handelImgUpload(e, imgurlref, nameref)}
+          />
+        </Button>
       </div>
       <Button
         style={{ marginTop: "20px" }}
