@@ -4,19 +4,11 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import { AddCircleOutline, HomeOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
   const navigate = useNavigate();
-  const [auth, setAuth] = React.useState(true);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   return (
     <Box sx={{ width: "100%", height: "fit-content" }}>
