@@ -11,3 +11,14 @@ body {
   padding: 0;
   margin: 0;
 }
+@media only screen and (max-device-width: 375px) {
+  .card {
+    flex-direction: column;
+    flex-flow: column-reverse;
+    align-items: center;
+  }
+  .btnContainer {
+    display: flex;
+    justify-content: center;
+  }
+}

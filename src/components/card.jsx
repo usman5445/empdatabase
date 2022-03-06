@@ -29,6 +29,7 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
   return (
     <Card
       key={k}
+      className="card"
       sx={{
         display: "flex",
         width: "fit-content",
@@ -55,7 +56,7 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
             {email}
           </Typography>
         </CardContent>
-        <Stack direction="row" spacing={2}>
+        <Stack className="btnContainer" direction="row" spacing={2}>
           <Button
             onClick={() => handeldelet(k, index)}
             variant="outlined"
@@ -76,7 +77,7 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
         component="img"
         sx={{ width: 151, marginLeft: "5px" }}
         image={imgurl}
-        alt="Live from space album cover"
+        alt="employee img"
       />
     </Card>
   );
