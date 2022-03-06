@@ -15,12 +15,16 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 
-const handelImgUpload = (e, imgurlref, nameref) => {
+const handelImgUpload = (e, imgurlref, nameref, setspinner) => {
+  setspinner(true);
   const file = e.target.files[0];
   const storage = getStorage();
   const strgRef = ref(storage, `employee-img/${nameref.current.value}`);
   uploadBytesResumable(strgRef, file).then(() =>
-    getDownloadURL(strgRef).then((url) => (imgurlref.current.value = url))
+    getDownloadURL(strgRef).then((url) => {
+      imgurlref.current.value = url;
+      setspinner(false);
+    })
   );
   console.log(nameref.current.value);
 };
@@ -75,6 +79,7 @@ export default function AddEmp() {
   const changeHappen = useSelector((state) => state.changer);
   const employeeArr = useSelector((state) => state.dtr);
   const editEmployeeObj = employeeArr[changeHappen.i];
+  const [spinner, setspinner] = useState(false);
   return (
     <div
       style={{
@@ -118,7 +123,7 @@ export default function AddEmp() {
           variant="standard"
           disabled
           defaultValue={
-            changeHappen.v ? editEmployeeObj.imgurl : "Nothing to show"
+            changeHappen.v ? editEmployeeObj.imgurl : "Please select an image"
           }
           inputRef={imgurlref}
         />
@@ -132,11 +137,12 @@ export default function AddEmp() {
             type="file"
             hidden
             accept="image/*"
-            onChange={(e) => handelImgUpload(e, imgurlref, nameref)}
+            onChange={(e) => handelImgUpload(e, imgurlref, nameref, setspinner)}
           />
         </Button>
       </div>
       <Button
+        disabled={!spinner ? false : true}
         style={{ marginTop: "20px" }}
         variant={"contained"}
         startIcon={<PersonPinCircleOutlined />}
@@ -152,7 +158,11 @@ export default function AddEmp() {
           )
         }
       >
-        {changeHappen.v ? "Update Employee" : "Add Employee"}
+        {spinner
+          ? "Please Wait! until image uploads"
+          : changeHappen.v
+          ? "Update Employee"
+          : "Add Employee"}
       </Button>
     </div>
   );

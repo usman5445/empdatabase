@@ -51,6 +51,7 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
             variant="subtitle1"
             color="text.secondary"
             component="div"
+            sx={{ maxWidth: "240px", wordWrap: "break-word" }}
           >
             {email}
           </Typography>
