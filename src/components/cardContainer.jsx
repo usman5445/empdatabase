@@ -1,9 +1,8 @@
 import { getDocs } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../redux-setup/actions/fetchData";
 import { empcolref } from "../redux-setup/reducers/manageDataReducer";
-import reduxStore from "../redux-setup/reduxStore";
 import EmpCard from "./card";
 async function rtdt() {
   const data = await getDocs(empcolref);

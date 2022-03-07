@@ -4,20 +4,18 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import { AddCircleOutline, HomeOutlined } from "@mui/icons-material";
+import {
+  AddCircleOutline,
+  HomeOutlined,
+  LogoutOutlined,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function NavBar() {
   const navigate = useNavigate();
-  const [auth, setAuth] = React.useState(true);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
-
+  const { logout } = useAuth0();
   return (
     <Box sx={{ width: "100%", height: "fit-content" }}>
       <AppBar position="static">
@@ -47,6 +45,14 @@ export default function NavBar() {
             >
               <AddCircleOutline />
             </IconButton>
+            <Button
+              color="error"
+              variant="contained"
+              endIcon={<LogoutOutlined />}
+              onClick={() => logout({ returnTo: window.location.origin })}
+            >
+              LogOut
+            </Button>
           </div>
         </Toolbar>
       </AppBar>

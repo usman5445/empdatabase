@@ -1,11 +1,33 @@
-import { PersonPinCircleOutlined } from "@mui/icons-material";
+import {
+  AddPhotoAlternate,
+  PersonPinCircleOutlined,
+} from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addData, updateData } from "../redux-setup/actions/fetchData";
 import { changeaction } from "../redux-setup/reducers/handleUpdateReducer";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
+const handelImgUpload = (e, imgurlref, nameref, setspinner) => {
+  setspinner(true);
+  const file = e.target.files[0];
+  const storage = getStorage();
+  const strgRef = ref(storage, `employee-img/${nameref.current.value}`);
+  uploadBytesResumable(strgRef, file).then(() =>
+    getDownloadURL(strgRef).then((url) => {
+      imgurlref.current.value = url;
+      setspinner(false);
+    })
+  );
+  console.log(nameref.current.value);
+};
 const handelSubmit = (
   nameref,
   emailref,
@@ -57,6 +79,7 @@ export default function AddEmp() {
   const changeHappen = useSelector((state) => state.changer);
   const employeeArr = useSelector((state) => state.dtr);
   const editEmployeeObj = employeeArr[changeHappen.i];
+  const [spinner, setspinner] = useState(false);
   return (
     <div
       style={{
@@ -98,11 +121,28 @@ export default function AddEmp() {
           style={{ margin: "5px" }}
           label="Image URL"
           variant="standard"
-          defaultValue={changeHappen.v ? editEmployeeObj.imgurl : ""}
+          disabled
+          defaultValue={
+            changeHappen.v ? editEmployeeObj.imgurl : "Please select an image"
+          }
           inputRef={imgurlref}
         />
+        <Button
+          startIcon={<AddPhotoAlternate />}
+          variant="contained"
+          component="label"
+        >
+          Upload Image
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={(e) => handelImgUpload(e, imgurlref, nameref, setspinner)}
+          />
+        </Button>
       </div>
       <Button
+        disabled={!spinner ? false : true}
         style={{ marginTop: "20px" }}
         variant={"contained"}
         startIcon={<PersonPinCircleOutlined />}
@@ -118,7 +158,11 @@ export default function AddEmp() {
           )
         }
       >
-        {changeHappen.v ? "Update Employee" : "Add Employee"}
+        {spinner
+          ? "Please Wait! until image uploads"
+          : changeHappen.v
+          ? "Update Employee"
+          : "Add Employee"}
       </Button>
     </div>
   );

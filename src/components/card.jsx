@@ -1,5 +1,3 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,7 +13,6 @@ import { changeaction } from "../redux-setup/reducers/handleUpdateReducer";
 import { handleDeleteAction } from "../redux-setup/reducers/handleDeleteReducer";
 
 export default function EmpCard({ k, name, email, imgurl, index }) {
-  const theme = useTheme();
   const dis = useDispatch();
   const navigate = useNavigate();
   function handelEdit(index) {
@@ -29,9 +26,11 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
   return (
     <Card
       key={k}
+      className="card"
       sx={{
         display: "flex",
         width: "fit-content",
+        height: "fit-content",
         padding: "10px",
         margin: "10px",
         boxShadow: "0 0 5px black",
@@ -51,11 +50,12 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
             variant="subtitle1"
             color="text.secondary"
             component="div"
+            sx={{ maxWidth: "240px", wordWrap: "break-word" }}
           >
             {email}
           </Typography>
         </CardContent>
-        <Stack direction="row" spacing={2}>
+        <Stack className="btnContainer" direction="row" spacing={2}>
           <Button
             onClick={() => handeldelet(k, index)}
             variant="outlined"
@@ -74,9 +74,13 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
       </Box>
       <CardMedia
         component="img"
-        sx={{ width: 151, marginLeft: "5px" }}
+        sx={{
+          width: "150px",
+          marginLeft: "5px",
+          objectFit: "scale-down",
+        }}
         image={imgurl}
-        alt="Live from space album cover"
+        alt="employee img"
       />
     </Card>
   );

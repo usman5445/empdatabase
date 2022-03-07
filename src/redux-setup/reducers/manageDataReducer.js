@@ -1,5 +1,4 @@
-import axios from "axios";
-import { app, db } from "../../firebase";
+import { db } from "../../firebase";
 import {
   addDoc,
   collection,
@@ -22,7 +21,7 @@ function manageDataReducer(state = [], action) {
       updateDoc(empspref, action.payload.dataObj);
       return state;
     case "DELETE_DATA":
-      var empspref = doc(db, "employees", action.payload.id);
+      empspref = doc(db, "employees", action.payload.id);
       console.log(action.payload.id);
       deleteDoc(empspref);
       return state;
