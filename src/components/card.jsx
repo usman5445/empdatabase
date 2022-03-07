@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -14,7 +13,6 @@ import { changeaction } from "../redux-setup/reducers/handleUpdateReducer";
 import { handleDeleteAction } from "../redux-setup/reducers/handleDeleteReducer";
 
 export default function EmpCard({ k, name, email, imgurl, index }) {
-  const theme = useTheme();
   const dis = useDispatch();
   const navigate = useNavigate();
   function handelEdit(index) {
@@ -32,6 +30,7 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
       sx={{
         display: "flex",
         width: "fit-content",
+        height: "fit-content",
         padding: "10px",
         margin: "10px",
         boxShadow: "0 0 5px black",
@@ -75,7 +74,11 @@ export default function EmpCard({ k, name, email, imgurl, index }) {
       </Box>
       <CardMedia
         component="img"
-        sx={{ width: 151, marginLeft: "5px" }}
+        sx={{
+          width: "150px",
+          marginLeft: "5px",
+          objectFit: "scale-down",
+        }}
         image={imgurl}
         alt="employee img"
       />
